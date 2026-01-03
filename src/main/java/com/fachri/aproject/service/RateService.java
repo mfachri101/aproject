@@ -33,7 +33,7 @@ public class RateService {
         (principal, rate, term) -> {
           BigDecimal monthlyPrincipal = principal.divide(BigDecimal.valueOf(term), RoundingMode.HALF_UP);
           BigDecimal monthlyInterest = principal.multiply(rate).divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP)
-              .divide(BigDecimal.valueOf(12), RoundingMode.HALF_UP);
+              .divide(BigDecimal.valueOf(term), RoundingMode.HALF_UP);
 
           return java.util.stream.IntStream.rangeClosed(1, term)
               .mapToObj(i -> new LoanRate(monthlyPrincipal, monthlyInterest))
