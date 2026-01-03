@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: aproject
+  datasource:
+    url: jdbc:postgresql://localhost:5432/loan_database
+    username: mycustomuser
+    password: mysecretpassword
+    driver-class-name: org.postgresql.Driver
+    schema: loan_schema
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
+      connection-timeout: 20000
+      max-lifetime: 1800000
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+# enable actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health,metrics,loggers,beans
+    health:
+      show-details: always

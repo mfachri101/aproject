@@ -1,0 +1,174 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-initial-schema
+      author: mfachri101
+      changes:
+        - createTable:
+            tableName: DEBTOR
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: documentId
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+        - createTable:
+            tableName: PAYMENT_HISTORY
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: paymentDate
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payedAmount
+                  type: NUMERIC(15, 2)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: LOAN
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: debtorId
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_loan_debtor
+                    referencedTableName: DEBTOR
+                    referencedColumnNames: id
+              - column:
+                  name: startDate
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: term
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: frequencies
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rate
+                  type: NUMERIC(10, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rateType
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: principal
+                  type: NUMERIC(15, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: LOAN_DETAIL
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: debtorId
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_loandetail_debtor
+                    referencedTableName: DEBTOR
+                    referencedColumnNames: id
+              - column:
+                  name: loanId
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_loandetail_loan
+                    referencedTableName: LOAN
+                    referencedColumnNames: id
+              - column:
+                  name: dueDate
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: outstandingLoan
+                  type: NUMERIC(15, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: outstandingInterest
+                  type: NUMERIC(15, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: paymentHistoryId
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_loandetail_paymenthistory
+                    referencedTableName: PAYMENT_HISTORY
+                    referencedColumnNames: id
+
+        - createIndex:
+            indexName: idx_loan_userid_status
+            tableName: LOAN
+            columns:
+              - column:
+                  name: debtorId
+              - column:
+                  name: status
+        - createIndex:
+            indexName: idx_loandetail_loanid_duedate
+            tableName: LOAN_DETAIL
+            columns:
+              - column:
+                  name: loanId
+              - column:
+                  name: dueDate
