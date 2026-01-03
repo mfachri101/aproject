@@ -18,7 +18,12 @@
    ```bash
    ./gradlew update
    ```
+   Liquibase is used to manage database migrations. Enterprise grade applications should always use a migration tool to ensure database schema consistency across different environments.
 5. Build the project:
+    ```
+    ./gradlew build
+    ```
+   It will generate Jooq classes based on the current database schema.
 6. Run the application using Gradle:
    ```bash
    ./gradlew bootRun
